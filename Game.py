@@ -3,6 +3,7 @@ import math
 from PIL import Image
 from main import Uni
 from worker import Worker
+from resourse import Resorse
 from building import Trone
 pygame.init()
 res = 100
@@ -13,6 +14,7 @@ surf = pygame.Surface((100, 100))
 surf.fill((255, 255, 255))
 snus = pygame.Surface((100, 100))
 snus.fill((0, 0, 0))
+grozdaniy = pygame.sprite.Group()
 grounitov = pygame.sprite.Group()
 grozdaniy = pygame.sprite.Group()
 grores = pygame.sprite.Group()
@@ -20,6 +22,7 @@ bg = pygame.image.load("ima/bg.jpg").convert()
 bg = pygame.transform.scale(bg, (1920, 1024))
 mu = Worker(200, 150, 'ima/test.png', grounitov)
 my = Worker(200, 50, 'ima/test.png', grounitov)
+zz = Resorse(800, 450, 'ima/Clock.png', grores)
 pygame.display.set_caption("My dream")
 k = 0
 while 1:
@@ -29,15 +32,17 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-        if event.type == pygame.KEYDOWN:
-            print(event)
+        #if event.type == pygame.KEYDOWN:
+            #print(event)
         if event.type == pygame.USEREVENT:
             sum = 0
             for i in grores:
-                if i.isworkon:
+                if i.isworkon == 1:
                     sum += 1
+                    print(res)
+                    i = 0
             res += 1 * sum
-            print("данные посланы")
+            #print("данные посланы")
             #база данных передаётся в сеть и забирается из сервера
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
@@ -56,10 +61,15 @@ while 1:
             if event.button == 3:
                 if keys[pygame.K_LALT]:
                     for i in grores:
+                        print(1)
                         if i.rect.collidepoint(pygame.mouse.get_pos()):
+                            print(2)
                             if i.isworkon == 0:
+                                print(3)
                                 for k in grounitov:
-                                    if k.rect.collidepoint(pygame.mouse.get_pos()) and k.chos == 1:
+                                    print(4)
+                                    if k.rect.collidepoint(pygame.mouse.get_pos()) and k.h == 1:
+                                        print(5)
                                         k.dob(res)
                                         i.work()
                 else:
@@ -71,6 +81,7 @@ while 1:
     for i in grounitov:
         i.updatepos(0)
     grozdaniy.draw(sz)
+    grores.draw(sz)
     grounitov.draw(sz)
     clock.tick(60)
     pygame.display.update()
