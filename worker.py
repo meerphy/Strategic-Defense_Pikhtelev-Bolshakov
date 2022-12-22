@@ -15,6 +15,6 @@ class Worker(Uni):
         return ob(self.x, self.y, im, spt)
 
     def dob(self, res):
-        self.chos = 0
+        self.h = 0
         self.shahta = res
-        self.resors = res.resors
+        self.resors = res

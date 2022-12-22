@@ -11,6 +11,7 @@ class Resorse(pygame.sprite.Sprite):
         self.image = pygame.image.load(im).convert_alpha()
         self.image = pygame.transform.scale(self.image, (200, 200))
         self.add(spt)
+        self.rect = self.image.get_rect(center=(self.x + 50, self.y + 50))
         self.isworkon = 0
         self.resors = 'Med'
     def work(self):

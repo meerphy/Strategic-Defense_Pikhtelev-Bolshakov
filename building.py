@@ -3,7 +3,6 @@ import math
 from PIL import Image
 from main import Uni
 from worker import Worker
-
 class Trone(pygame.sprite.Sprite):
     def __init__(self, x, y, im, spt):
         self.x = x
