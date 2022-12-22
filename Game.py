@@ -37,8 +37,8 @@ while 1:
         if event.type == pygame.USEREVENT:
             sum = 0
             for i in grores:
-                if i.isworkon == 1:
-                    sum += 1
+                if i.isworkon > 0:
+                    sum += i.isworkon
                     print(res)
                     i = 0
             res += 1 * sum
@@ -64,7 +64,7 @@ while 1:
                         print(1)
                         if i.rect.collidepoint(pygame.mouse.get_pos()):
                             print(2)
-                            if i.isworkon == 0:
+                            if i.isworkon < 3:
                                 print(3)
                                 for k in grounitov:
                                     print(4)
