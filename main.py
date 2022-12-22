@@ -13,6 +13,7 @@ class Uni(pygame.sprite.Sprite):
         self.v.y = y + 50
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(im).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (150, 150))
         self.rect = self.image.get_rect(center=(self.x + 50, self.y + 50))
         self.original_image = self.image
         self.need_y = self.y
@@ -35,13 +36,34 @@ class Uni(pygame.sprite.Sprite):
 
     def updatepos(self, speed):
         if self.h == 1:
+            koff = self.need_x - self.x
             if self.need_y != self.y or self.need_x != self.x:
                 self.v.x = self.need_x - self.x
                 self.v.y = self.need_y - self.y
-                self.x = int(0.05 * self.v.x * self.k) + self.x
-                self.y = int(0.05 * self.v.y * self.k) + self.y
-                self.rect.y = self.y - 150
-                self.rect.x = self.x - 150
+                self.xi = int(0.001 * self.v.x * self.k)
+                self.yi = int(0.001 * self.v.y * self.k)
+                if self.xi > 5 and self.need_x != self.x and self.need_x > self.x:
+                    self.x += 1
+                else:
+                    self.x += self.xi
+                if self.yi > 5 and self.need_y != self.y and self.need_y > self.y:
+                    self.y += 1
+                else:
+                    self.y += self.yi
+                if self.xi < 5 and self.need_x != self.x and self.need_x < self.x:
+                    self.x -= 1
+                else:
+                    self.x += self.xi
+                if self.yi < 5 and self.need_y != self.y and self.need_y < self.y:
+                    self.y -= 1
+                else:
+                    self.y += self.yi
+                if ((abs(self.y) - abs(self.need_y) == 1 or abs(self.y) - abs(self.need_y) == -1) and
+                    (abs(self.x) - abs(self.need_x) == 1 or abs(self.x) - abs(self.need_x) == -1)):
+                    self.need_y = self.y
+                    self.need_x = self.x
+                self.rect.y = self.y - 60
+                self.rect.x = self.x - 60
                 pygame.time.wait(speed)
                 self.k += 1
             else:
