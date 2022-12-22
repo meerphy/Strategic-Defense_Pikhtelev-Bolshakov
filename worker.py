@@ -13,3 +13,8 @@ class Worker(Uni):
         self.need_x = self.x
         self.need_y = self.y
         return ob(self.x, self.y, im, spt)
+
+    def dob(self, res):
+        self.chos = 0
+        self.shahta = res
+        self.resors = res.resors

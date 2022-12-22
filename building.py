@@ -12,7 +12,7 @@ class Trone(pygame.sprite.Sprite):
         self.hp = 3000
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(im).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (200, 200))
+        self.image = pygame.transform.scale(self.image, (250, 250))
         self.rect = self.image.get_rect(center=(self.x + 50, self.y + 50))
         self.add(spt)
         self.k = 0
@@ -21,3 +21,5 @@ class Trone(pygame.sprite.Sprite):
         if res >= 50:
             Worker(self.x + 150, self.y + 150, 'ima/test.png', g)
             return res - 50
+        else:
+            return res
