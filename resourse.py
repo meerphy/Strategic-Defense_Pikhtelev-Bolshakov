@@ -15,4 +15,4 @@ class Resorse(pygame.sprite.Sprite):
         self.isworkon = 0
         self.resors = 'Med'
     def work(self):
-        self.isworkon = 1
+        self.isworkon += 1
