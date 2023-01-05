@@ -1,10 +1,12 @@
 import pygame
 import math
-from PIL import Image
 from main import Uni
 from worker import Worker
+
+
 class Trone(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt):
+    def __init__(self, x, y, im, spt, spg):
+        super().__init__(spt, spg)
         self.x = x
         self.y = y
         self.h = 0
@@ -18,7 +20,8 @@ class Trone(pygame.sprite.Sprite):
 
     def spawner(self, g, res):
         if res >= 50:
-            Worker(self.x + 150, self.y + 150, 'ima/test.png', g)
+            Worker(self.x + 150, self.y + 150, 'data/samolet.png', g)
+            print(self.x + 150, self.y + 150)
             return res - 50
         else:
             return res

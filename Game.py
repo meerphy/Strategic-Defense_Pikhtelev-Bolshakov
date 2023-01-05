@@ -1,7 +1,4 @@
 import pygame
-import math
-from PIL import Image
-from main import Uni
 from worker import Worker
 from resourse import Resorse
 from building import Trone

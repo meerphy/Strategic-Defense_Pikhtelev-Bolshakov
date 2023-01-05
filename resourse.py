@@ -1,6 +1,5 @@
 import pygame
 import math
-from PIL import Image
 
 class Resorse(pygame.sprite.Sprite):
     def __init__(self, x, y, im, spt):
