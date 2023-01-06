@@ -5,7 +5,8 @@ import sys
 from worker import Worker
 from resourse import Resorse
 from building import Trone
-
+from enemy import Enemy
+from but import Button
 kratonostb = 5
 
 
@@ -72,13 +73,13 @@ gs = socket(AF_INET, SOCK_STREAM)
 gs.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
 gs.connect(("localhost", 9999))
 
-
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('Strategic Defense')
     res = 100
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     clock = pygame.time.Clock()
+    enemy_group = pygame.sprite.Group()
     grozdaniy = pygame.sprite.Group()
     grounitov = pygame.sprite.Group()
 
@@ -105,8 +106,10 @@ if __name__ == '__main__':
     towers_right[1] = Towers(295 * kratonostb, 60 * kratonostb, 'левый')
     towers_right[2] = Towers(360 * kratonostb, 60 * kratonostb, 'левый')
     towers_right[3] = Towers(330 * kratonostb, 30 * kratonostb, 'левый')
-
+    menu = pygame.sprite.Group()
     grores = pygame.sprite.Group()
+    menu_b = Button(560, 570, "data/menu.png", menu)
+    dob_butto = Button(1120, 570, "data/zn_dob.png", menu)
     mu = Worker(200, 150, 'data/samolet.png', grounitov)
     my = Worker(200, 50, 'data/samolet.png', grounitov)
     k = 0
@@ -181,9 +184,19 @@ if __name__ == '__main__':
             for i in grounitov:
                 if i.x == int(x) and i.y == int(y):
                     enemy.remove(j)
-        print(enemy)
+        for ene in enemy:
+            if ene[0] == 'Worker':
+                Enemy(int(ene[2]), int(ene[1]), "data/samaolet.png", enemy_group, ene[0])
+        flagok = 0
+        for i in grounitov:
+            if i.h == 1:
+                flagok = 1
+                break
         all_sprites.draw(screen)
+        enemy_group.draw(screen)
         grounitov.draw(screen)
+        if flagok == 1:
+            menu.draw(screen)
         pygame.display.flip()
         clock.tick(fps)
     pygame.quit()
