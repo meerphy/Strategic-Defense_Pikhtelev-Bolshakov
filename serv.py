@@ -68,4 +68,4 @@ class Server:
     )
 
 
-Server('192.168.1.8', 9999, 'data/databas.db').startserv()
+Server('192.168.1.3', 9999, 'data/databas.db').startserv()

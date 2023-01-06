@@ -5,7 +5,7 @@ from main import Uni
 
 class Worker(Uni):
     def __init__(self, x, y, im, spt):
-        Uni.__init__(self, x, y, im, spt)
+        Uni.__init__(self, x, y, im, spt, 0, "Worker")
 
     def startwork(self):
         print("работа началась")

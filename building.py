@@ -20,7 +20,7 @@ class Trone(pygame.sprite.Sprite):
 
     def spawner(self, g, res):
         if res >= 50:
-            Worker(self.x + 150, self.y + 150, 'data/samolet.png', g)
+            Worker(self.rect.x + 150, self.rect.y + 150, 'data/samolet.png', g)
             print(self.x + 150, self.y + 150)
             return res - 50
         else:

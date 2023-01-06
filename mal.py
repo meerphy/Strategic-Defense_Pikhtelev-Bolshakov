@@ -4,6 +4,7 @@ import sys
 from worker import Worker
 from resourse import Resorse
 from building import Trone
+from client import Client
 
 kratonostb = 5
 
@@ -69,6 +70,7 @@ class Camera:
 
 
 if __name__ == '__main__':
+    Client(input('type server ip: '), 9999).connect()
     pygame.init()
     pygame.display.set_caption('Strategic Defense')
     res = 100
@@ -133,6 +135,7 @@ if __name__ == '__main__':
                     camera.apply(grounitov, 0, 100)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+                    print(tron_left.rect)
                     for i in grounitov:
                         if i.rect.collidepoint(pygame.mouse.get_pos()):
                             i.chos()

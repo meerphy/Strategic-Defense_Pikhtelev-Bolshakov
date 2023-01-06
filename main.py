@@ -2,7 +2,8 @@ import pygame
 import math
 
 class Uni(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt):
+    def __init__(self, x, y, im, spt, en, tip):
+        self.tip = tip
         self.x = x
         self.y = y
         self.h = 0
