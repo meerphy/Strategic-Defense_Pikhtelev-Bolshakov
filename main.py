@@ -1,6 +1,7 @@
 import pygame
 import math
 
+
 class Uni(pygame.sprite.Sprite):
     def __init__(self, x, y, im, spt):
         self.x = x
@@ -19,6 +20,7 @@ class Uni(pygame.sprite.Sprite):
         self.need_x = self.x
         self.add(spt)
         self.k = 0
+        self.hp = 100
 
     def rotate(self, position):
         if self.h == 1:
@@ -33,7 +35,7 @@ class Uni(pygame.sprite.Sprite):
                 self.image = pygame.transform.flip(self.image, 0, 1)
             self.image = pygame.transform.rotate(self.image, int(angle))
 
-    def updatepos(self, speed):
+    def update(self, speed):
         if self.h == 1:
             koff = self.need_x - self.x
             if self.need_y != self.y or self.need_x != self.x:

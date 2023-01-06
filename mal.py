@@ -2,7 +2,6 @@ import pygame
 import os
 import sys
 from worker import Worker
-from resourse import Resorse
 from building import Trone
 
 kratonostb = 5
@@ -47,12 +46,21 @@ class Tron(pygame.sprite.Sprite):
 class Towers(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, side):
         super().__init__(tower_group, all_sprites)
+        self.delay_attack = 100
         self.image = load_image('tower.png')
         self.image = pygame.transform.scale(self.image, (25 * kratonostb, 25 * kratonostb))
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect().move(pos_x, pos_y)
         self.hp = 1000
+        self.target = None
         # нужно сделать разный цвет или разные картинки по переменной side
+
+    def check_collide(self):
+        '''
+        возвращает юнит находящийся в радиусе башни
+        1.5 - кратность радиуса
+        '''
+        return pygame.sprite.spritecollideany(self, grounitov, pygame.sprite.collide_circle_ratio(1.5))
 
 
 class Camera:
@@ -91,7 +99,7 @@ if __name__ == '__main__':
 
     towers_left = {}
     towers_left[0] = Towers(5 * kratonostb, 165 * kratonostb, 'левый')
-    towers_left[1] = Towers(70 * kratonostb, 165 * kratonostb, 'левый')
+    towers_left[1] = Towers(100 * kratonostb, 115 * kratonostb, 'левый')
     towers_left[2] = Towers(70 * kratonostb, 225 * kratonostb, 'левый')
     towers_left[3] = Towers(35 * kratonostb, 195 * kratonostb, 'левый')
 
@@ -107,7 +115,6 @@ if __name__ == '__main__':
     k = 0
     camera = Camera()
     fps = 240
-    clock = pygame.time.Clock()
     moving = False
 
     running = True
@@ -161,9 +168,26 @@ if __name__ == '__main__':
                             i.new()
                             i.rotate(pygame.mouse.get_pos())
                             i.k = 0
+        grounitov.update(0)
 
-        for i in grounitov:
-            i.updatepos(0)
+        for tower in tower_group:
+            col_unit = tower.check_collide()
+            '''
+            происходит нанесение урона юниту, если он в радиусе атаки башни
+            сделано замеделение нанесения урона, чтобы не было слишком быстро
+            '''
+            if col_unit:
+                if not tower.target or not (col_unit == tower.target or pygame.sprite.collide_circle(tower, tower.target)):
+                    tower.target = col_unit
+                if tower.delay_attack == 300:
+                    tower.delay_attack = 0
+                    print(tower.target.hp)
+                    tower.target.hp -= 15
+                    if tower.target.hp <= 0:
+                        tower.target.kill()
+                        tower.target = None
+                else:
+                    tower.delay_attack += 1
         all_sprites.draw(screen)
         grounitov.draw(screen)
         pygame.display.flip()
