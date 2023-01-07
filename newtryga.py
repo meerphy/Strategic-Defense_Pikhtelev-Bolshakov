@@ -7,6 +7,7 @@ from resourse import Resorse
 from building import Trone
 from enemy import Enemy
 from but import Button
+from cursor import  Cur
 kratonostb = 5
 
 
@@ -108,13 +109,17 @@ if __name__ == '__main__':
     towers_right[3] = Towers(330 * kratonostb, 30 * kratonostb, 'левый')
     menu = pygame.sprite.Group()
     grores = pygame.sprite.Group()
+    curs_grou = pygame.sprite.Group()
     menu_b = Button(560, 570, "data/menu.png", menu)
     dob_butto = Button(1120, 570, "data/zn_dob.png", menu)
+    btow_butto = Button(900, 570, "data/zn_towera.png", menu)
     mu = Worker(200, 150, 'data/samolet.png', grounitov)
     my = Worker(200, 50, 'data/samolet.png', grounitov)
     k = 0
     camera = Camera()
     fps = 240
+    ndb = 0
+    ntd = 0
     moving = False
     running = True
     while running:
@@ -150,6 +155,16 @@ if __name__ == '__main__':
                                 res = i.spawner(grounitov, res)
                                 print(1)
                                 flag = 1
+                        for i in menu:
+                            if i.rect.collidepoint(pygame.mouse.get_pos()):
+                                pygame.mouse.set_visible(False)
+                                if i == dob_butto:
+                                    ntb = 1
+                                    curs = Cur(20, 20, "data/dob.png", curs_grou)
+                                if i == btow_butto:
+                                    ntd = 1
+                                    curs = Cur(20, 20, "data/ctoow.png", curs_grou)
+
                 if event.button == 3:
                     if keys[pygame.K_LALT]:
                         for i in grores:
@@ -197,6 +212,9 @@ if __name__ == '__main__':
         grounitov.draw(screen)
         if flagok == 1:
             menu.draw(screen)
+        for i in curs_grou:
+            i.update()
+        curs_grou.draw(screen)
         pygame.display.flip()
         clock.tick(fps)
     pygame.quit()
