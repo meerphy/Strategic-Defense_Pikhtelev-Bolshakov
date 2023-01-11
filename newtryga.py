@@ -7,7 +7,7 @@ from resourse import Resorse
 from building import Trone
 from enemy import Enemy
 from but import Button
-from cursor import  Cur
+from cursor import Cur
 kratonostb = 5
 
 
@@ -48,8 +48,8 @@ class Tron(pygame.sprite.Sprite):
 
 
 class Towers(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y, side):
-        super().__init__(tower_group, all_sprites)
+    def __init__(self, pos_x, pos_y, side, g1, g2):
+        super().__init__(g1, g2)
         self.image = load_image('tower.png')
         self.image = pygame.transform.scale(self.image, (25 * kratonostb, 25 * kratonostb))
         self.mask = pygame.mask.from_surface(self.image)
@@ -97,29 +97,29 @@ if __name__ == '__main__':
     tron_right = Trone(340 * kratonostb, 5 * kratonostb, "data/tron.png", grozdaniy, all_sprites)
 
     towers_left = {}
-    towers_left[0] = Towers(5 * kratonostb, 165 * kratonostb, 'левый')
-    towers_left[1] = Towers(70 * kratonostb, 165 * kratonostb, 'левый')
-    towers_left[2] = Towers(70 * kratonostb, 225 * kratonostb, 'левый')
-    towers_left[3] = Towers(35 * kratonostb, 195 * kratonostb, 'левый')
+    towers_left[0] = Towers(5 * kratonostb, 165 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_left[1] = Towers(70 * kratonostb, 165 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_left[2] = Towers(70 * kratonostb, 225 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_left[3] = Towers(35 * kratonostb, 195 * kratonostb, 'левый', tower_group, all_sprites)
 
     towers_right = {}
-    towers_right[0] = Towers(295 * kratonostb, 5 * kratonostb, 'левый')
-    towers_right[1] = Towers(295 * kratonostb, 60 * kratonostb, 'левый')
-    towers_right[2] = Towers(360 * kratonostb, 60 * kratonostb, 'левый')
-    towers_right[3] = Towers(330 * kratonostb, 30 * kratonostb, 'левый')
+    towers_right[0] = Towers(295 * kratonostb, 5 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_right[1] = Towers(295 * kratonostb, 60 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_right[2] = Towers(360 * kratonostb, 60 * kratonostb, 'левый', tower_group, all_sprites)
+    towers_right[3] = Towers(330 * kratonostb, 30 * kratonostb, 'левый', tower_group, all_sprites)
     menu = pygame.sprite.Group()
     grores = pygame.sprite.Group()
     curs_grou = pygame.sprite.Group()
     menu_b = Button(560, 570, "data/menu.png", menu)
     dob_butto = Button(1120, 570, "data/zn_dob.png", menu)
     btow_butto = Button(900, 570, "data/zn_towera.png", menu)
-    mu = Worker(200, 150, 'data/samolet.png', grounitov)
-    my = Worker(200, 50, 'data/samolet.png', grounitov)
+    mu = Worker(200, 150, 'data/samolet.png', grounitov, tower_group, all_sprites)
+    my = Worker(200, 50, 'data/samolet.png', grounitov, tower_group, all_sprites)
     k = 0
     camera = Camera()
     fps = 240
     ndb = 0
-    ntd = 0
+    ntb = 0
     moving = False
     running = True
     while running:
@@ -146,6 +146,12 @@ if __name__ == '__main__':
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     print(tron_left.rect)
+                    if ntb == 1:
+                        for i in grounitov:
+                            i.new()
+                            i.rotate(pygame.mouse.get_pos())
+                            if i.h:
+                                i.buil == 1
                     for i in grounitov:
                         if i.rect.collidepoint(pygame.mouse.get_pos()):
                             i.chos()
@@ -159,10 +165,13 @@ if __name__ == '__main__':
                             if i.rect.collidepoint(pygame.mouse.get_pos()):
                                 pygame.mouse.set_visible(False)
                                 if i == dob_butto:
-                                    ntb = 1
+                                    ndb = 1
                                     curs = Cur(20, 20, "data/dob.png", curs_grou)
                                 if i == btow_butto:
-                                    ntd = 1
+                                    for worke in grounitov:
+                                        if worke.h:
+                                            worke.buil = 1
+                                    ntb = 1
                                     curs = Cur(20, 20, "data/ctoow.png", curs_grou)
 
                 if event.button == 3:

@@ -1,8 +1,12 @@
 import pygame
 import math
+from towers import Towers
+
 
 class Uni(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt, en, tip):
+    def __init__(self, x, y, im, spt, en, tip, g1, g2):
+        self.g1 = g1
+        self.g2 = g2
         self.tip = tip
         self.x = x
         self.y = y
@@ -69,6 +73,12 @@ class Uni(pygame.sprite.Sprite):
             else:
                 self.k = 0
                 self.image = self.original_image
+                if self.buil:
+                    try:
+                        self.build(Towers)
+
+                    except:
+                        pass
 
     def new(self):
         self.image = self.original_image
