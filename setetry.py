@@ -13,18 +13,30 @@ while 1:
         print(f"your ip is {ip}")
         n_s.setblocking(0)
         players.append(n_s)
+        print(len(players))
+        if len(players) == 2:
+            try:
+                players[0].send("Start".encode())
+                players[1].send("Start".encode())
+            except:
+                pass
     except:
         pass
     for s in players:
         try:
-            dat = s.recv(1024)
-            dat = dat.decode()
-            print(f"+{dat}")
+            if dat == '':
+                dat = s.recv(1024)
+                dat = dat.decode()
+            else:
+                k = s.recv(1024)
+                dat += k.decode()
         except:
             pass
 
     for s in players:
         try:
+            if dat != "":
+                print(f"{dat}")
             s.send(dat.encode())
         except:
             players.remove(s)

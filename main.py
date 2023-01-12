@@ -76,6 +76,7 @@ class Uni(pygame.sprite.Sprite):
                 if self.buil:
                     try:
                         self.build(Towers)
+                        self.buil = 0
 
                     except:
                         pass

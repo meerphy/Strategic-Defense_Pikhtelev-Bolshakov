@@ -61,8 +61,8 @@ class Towers(pygame.sprite.Sprite):
 class Camera:
     # зададим начальный сдвиг камеры
     def __init__(self):
-        self.dx = -50 * kratonostb
-        self.dy = -50 * kratonostb
+        self.dx = -100 * kratonostb
+        self.dy = -20 * kratonostb
         self.apply(all_sprites, self.dx, self.dy)
 
     def apply(self, obj, x, y):
@@ -115,8 +115,8 @@ if __name__ == '__main__':
     menu_b = Button(560, 570, "data/menu.png", menu)
     dob_butto = Button(1120, 570, "data/zn_dob.png", menu)
     btow_butto = Button(900, 570, "data/zn_towera.png", menu)
-    mu = Worker(200, 150, 'data/samolet.png', grounitov, tower_group, all_sprites)
-    my = Worker(200, 50, 'data/samolet.png', grounitov, tower_group, all_sprites)
+    mu = Worker(700, 150, 'data/samolet.png', grounitov, tower_group, all_sprites)
+    my = Worker(700, 50, 'data/samolet.png', grounitov, tower_group, all_sprites)
     k = 0
     camera = Camera()
     fps = 240
@@ -208,13 +208,13 @@ if __name__ == '__main__':
         dat = gs.recv(1024).decode()
 
         datas = dat.split(',')[:-1]
+        enemy = datas.copy()
         print(datas)
         try:
             cl, x, y = datas[0].split()
             enemy_group.empty()
         except:
             pass
-        enemy = datas.copy()
         for j in datas:
             try:
                 cl, y, x = j.split()
@@ -226,7 +226,6 @@ if __name__ == '__main__':
         for ene in enemy:
             try:
                 cl, y, x = ene.split()
-                enemy_group.empty()
                 if cl == 'Worker':
                     Enemy(int(x), int(y), "data/samolet.png", enemy_group, ene[0], all_sprites, Towers)
                     print("yay")
