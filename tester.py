@@ -72,7 +72,7 @@ class Camera:
 
 gs = socket(AF_INET, SOCK_STREAM)
 gs.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
-gs.connect(("localhost", 9999))
+gs.connect(("192.168.43.9", 9999))
 star = ""
 while star != "Start":
     star = gs.recv(1024).decode()
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     my = Worker(700, 50, 'data/samolet.png', grounitov, tower_group, all_sprites)
     k = 0
     camera = Camera()
-    fps = 240
+    fps = 50
     ndb = 0
     ntb = 0
     moving = False
