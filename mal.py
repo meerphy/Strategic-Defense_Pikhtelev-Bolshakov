@@ -12,6 +12,24 @@ def generate_map():
             Tile(x, y)
 
 
+class Res(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__(resourse_group)
+        self.image = load_image('res.png')
+        self.image = pygame.transform.scale(self.image, (45 * kratonostb, 10 * kratonostb))
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+
+
+class Resources(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y, image):
+        super(Resources, self).__init__(resourse_group)
+        self.image = load_image(image)
+        self.image = pygame.transform.scale(self.image, (7 * kratonostb, 7 * kratonostb))
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+
+
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
     # если файл не существует, то выходим
@@ -88,6 +106,12 @@ if __name__ == '__main__':
     tiles_group = pygame.sprite.Group()
     tron_group = pygame.sprite.Group()
     tower_group = pygame.sprite.Group()
+
+    resourse_group = pygame.sprite.Group()
+    res = Res(100 * kratonostb, 2 * kratonostb)
+    golda = Resources(102 * kratonostb, 3.7 * kratonostb, 'gold.png')
+    aluminum = Resources(116 * kratonostb, 4 * kratonostb, 'aluminum.png')
+    titan = Resources(129 * kratonostb, 3.5 * kratonostb, 'titan.png')
 
     size = width, height = 1300, 858
     screen = pygame.display.set_mode(size)
@@ -196,6 +220,7 @@ if __name__ == '__main__':
                 else:
                     tower.delay_attack += 1
         all_sprites.draw(screen)
+        resourse_group.draw(screen)
         grounitov.draw(screen)
         pygame.display.flip()
         clock.tick(fps)
