@@ -4,8 +4,8 @@ from main import Uni
 
 
 class Worker(Uni):
-    def __init__(self, x, y, im, spt):
-        Uni.__init__(self, x, y, im, spt)
+    def __init__(self, x, y, im, spt, spg):
+        Uni.__init__(self, x, y, im, spt, spg)
 
     def startwork(self):
         print("работа началась")

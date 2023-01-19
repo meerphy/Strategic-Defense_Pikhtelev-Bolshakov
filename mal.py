@@ -2,7 +2,6 @@ import pygame
 import os
 import sys
 from worker import Worker
-from building import Trone
 
 kratonostb = 5
 
@@ -94,8 +93,8 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(size)
 
     generate_map()
-    tron_left = Trone(5 * kratonostb, 205 * kratonostb, "data/tron.png", grozdaniy, all_sprites)
-    tron_right = Trone(340 * kratonostb, 5 * kratonostb, "data/tron.png", grozdaniy, all_sprites)
+    tron_left = Tron(5 * kratonostb, 205 * kratonostb, 'left')
+    tron_right = Tron(340 * kratonostb, 5 * kratonostb, 'right')
 
     towers_left = {}
     towers_left[0] = Towers(5 * kratonostb, 165 * kratonostb, 'левый')
@@ -110,8 +109,8 @@ if __name__ == '__main__':
     towers_right[3] = Towers(330 * kratonostb, 30 * kratonostb, 'левый')
 
     grores = pygame.sprite.Group()
-    mu = Worker(200, 150, 'data/samolet.png', grounitov)
-    my = Worker(200, 50, 'data/samolet.png', grounitov)
+    mu = Worker(200, 150, 'data/samolet.png', grounitov, all_sprites)
+    my = Worker(200, 50, 'data/samolet.png', grounitov, all_sprites)
     k = 0
     camera = Camera()
     fps = 240
@@ -138,6 +137,14 @@ if __name__ == '__main__':
                 if event.key == pygame.K_UP:
                     camera.apply(all_sprites, 0, 100)
                     camera.apply(grounitov, 0, 100)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+                moving = True
+            if event.type == pygame.MOUSEMOTION:
+                if moving:
+                    x_new, y_new = event.rel
+                    camera.apply(all_sprites, x_new, y_new)
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 2:
+                moving = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for i in grounitov:

@@ -3,7 +3,7 @@ import math
 
 
 class Uni(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt):
+    def __init__(self, x, y, im, spt, spg):
         self.x = x
         self.y = y
         self.h = 0
@@ -19,6 +19,7 @@ class Uni(pygame.sprite.Sprite):
         self.need_y = self.y
         self.need_x = self.x
         self.add(spt)
+        self.add(spg)
         self.k = 0
         self.hp = 100
 
