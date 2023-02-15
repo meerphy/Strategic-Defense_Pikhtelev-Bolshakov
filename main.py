@@ -1,9 +1,8 @@
 import pygame
-import os
-import sys
 from worker import Worker
 from table_res import Clres, Res
 from builds import Tile, Tron, Towers
+from menu import start_screen
 
 kratnostb = 5
 kolvo_golda = 99
@@ -15,16 +14,6 @@ def generate_map():
     for y in range(17):
         for x in range(26):
             Tile(x, y, tiles_group, all_sprites, kratnostb)
-
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
-    # если файл не существует, то выходим
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    return image
 
 
 class Camera:
@@ -46,6 +35,23 @@ if __name__ == '__main__':
     res = 100
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     clock = pygame.time.Clock()
+    size = width, height = 1300, 858
+    screen = pygame.display.set_mode(size)
+    fps = 240
+
+    pygame.mixer.music.load('data/music1.mp3')
+    pygame.mixer.music.set_volume(.01)
+    pygame.mixer.music.play(-1)
+
+    while True:
+        status = start_screen(screen, width, height, clock, fps)
+        if status == 'duo':
+            pass              #подключить сетевую часть
+        elif status == 'settings':
+            pass
+        else:
+            break
+
     grozdaniy = pygame.sprite.Group()
     grounitov = pygame.sprite.Group()
 
@@ -63,9 +69,6 @@ if __name__ == '__main__':
     font_golda = font_res.render(str(kolvo_golda), True, (0, 0, 0))
     font_aluminum = font_res.render(str(kolvo_aluminum), True, (0, 0, 0))
     font_titan = font_res.render(str(kolvo_titan), True, (0, 0, 0))
-
-    size = width, height = 1300, 858
-    screen = pygame.display.set_mode(size)
 
     generate_map()
     tron_left = Tron(5 * kratnostb, 205 * kratnostb, 'left', tron_group, all_sprites, kratnostb)
@@ -88,7 +91,6 @@ if __name__ == '__main__':
     my = Worker(200, 50, 'data/samolet.png', grounitov, all_sprites)
     k = 0
     camera = Camera()
-    fps = 240
     moving = False
 
     running = True
