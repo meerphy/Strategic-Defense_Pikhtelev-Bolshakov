@@ -1,80 +1,181 @@
 import pygame
-import math
+import os
+import sys
+from worker import Worker
+from table_res import Clres, Res
+from builds import Tile, Tron, Towers
+
+kratnostb = 5
+kolvo_golda = 99
+kolvo_aluminum = 99
+kolvo_titan = 99
 
 
-class Uni(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt, spg):
-        self.x = x
-        self.y = y
-        self.h = 0
-        self.v = pygame.Vector2()
-        self.v.x = x + 50
-        self.na = im
-        self.v.y = y + 50
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(im).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (150, 150))
-        self.rect = self.image.get_rect(center=(self.x + 50, self.y + 50))
-        self.original_image = self.image
-        self.need_y = self.y
-        self.need_x = self.x
-        self.add(spt)
-        self.add(spg)
-        self.k = 0
-        self.hp = 100
+def generate_map():
+    for y in range(17):
+        for x in range(26):
+            Tile(x, y, tiles_group, all_sprites, kratnostb)
 
-    def rotate(self, position):
-        if self.h == 1:
-            mousex, mousey = position
-            angle = 10.
-            self.need_y = mousey
-            self.need_x = mousex
-            rel_x, rel_y = mousex - self.x, mousey - self.y
-            angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
-            print(int(angle))
-            if abs(int(angle)) > 90:
-                self.image = pygame.transform.flip(self.image, 0, 1)
-            self.image = pygame.transform.rotate(self.image, int(angle))
 
-    def update(self, speed):
-        if self.h == 1:
-            koff = self.need_x - self.x
-            if self.need_y != self.y or self.need_x != self.x:
-                self.v.x = self.need_x - self.x
-                self.v.y = self.need_y - self.y
-                self.xi = int(0.001 * self.v.x * self.k)
-                self.yi = int(0.001 * self.v.y * self.k)
-                if self.xi > 5 and self.need_x != self.x and self.need_x > self.x:
-                    self.x += 1
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    image = pygame.image.load(fullname)
+    return image
+
+
+class Camera:
+    # зададим начальный сдвиг камеры
+    def __init__(self):
+        self.dx = -50 * kratnostb
+        self.dy = -50 * kratnostb
+        self.apply(all_sprites, self.dx, self.dy)
+
+    def apply(self, obj, x, y):
+        for sprite in obj:
+            sprite.rect.x += x
+            sprite.rect.y += y
+
+
+if __name__ == '__main__':
+    pygame.init()
+    pygame.display.set_caption('Strategic Defense')
+    res = 100
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    clock = pygame.time.Clock()
+    grozdaniy = pygame.sprite.Group()
+    grounitov = pygame.sprite.Group()
+
+    all_sprites = pygame.sprite.Group()
+    tiles_group = pygame.sprite.Group()
+    tron_group = pygame.sprite.Group()
+    tower_group = pygame.sprite.Group()
+
+    font_res = pygame.font.Font(None, 40)
+    resourse_group = pygame.sprite.Group()
+    res_table = Res(100 * 5, 2 * 5, 'res.png', resourse_group)
+    golda = Clres(102 * 5, 4.7 * 5, 'gold.png', resourse_group)
+    aluminum = Clres(115.5 * 5, 4.5 * 5, 'aluminum.png', resourse_group)
+    titan = Clres(129.5 * 5, 4.5 * 5, 'titan.png', resourse_group)
+    font_golda = font_res.render(str(kolvo_golda), True, (0, 0, 0))
+    font_aluminum = font_res.render(str(kolvo_aluminum), True, (0, 0, 0))
+    font_titan = font_res.render(str(kolvo_titan), True, (0, 0, 0))
+
+    size = width, height = 1300, 858
+    screen = pygame.display.set_mode(size)
+
+    generate_map()
+    tron_left = Tron(5 * kratnostb, 205 * kratnostb, 'left', tron_group, all_sprites, kratnostb)
+    tron_right = Tron(340 * kratnostb, 5 * kratnostb, 'right', tron_group, all_sprites, kratnostb)
+
+    towers_left = {}
+    towers_left[0] = Towers(5 * kratnostb, 165 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_left[1] = Towers(70 * kratnostb, 165 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_left[2] = Towers(70 * kratnostb, 225 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_left[3] = Towers(35 * kratnostb, 195 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+
+    towers_right = {}
+    towers_right[0] = Towers(295 * kratnostb, 5 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_right[1] = Towers(295 * kratnostb, 60 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_right[2] = Towers(360 * kratnostb, 60 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+    towers_right[3] = Towers(330 * kratnostb, 30 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
+
+    grores = pygame.sprite.Group()
+    mu = Worker(200, 150, 'data/samolet.png', grounitov, all_sprites)
+    my = Worker(200, 50, 'data/samolet.png', grounitov, all_sprites)
+    k = 0
+    camera = Camera()
+    fps = 240
+    moving = False
+
+    running = True
+    while running:
+        flag = 0
+        keys = pygame.key.get_pressed()
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    camera.apply(all_sprites, 100, 0)
+                    camera.apply(grounitov, 100, 0)
+                if event.key == pygame.K_RIGHT:
+                    camera.apply(all_sprites, -100, 0)
+                    camera.apply(grounitov, -100, 0)
+                if event.key == pygame.K_DOWN:
+                    camera.apply(all_sprites, 0, -100)
+                    camera.apply(grounitov, 0, -100)
+                if event.key == pygame.K_UP:
+                    camera.apply(all_sprites, 0, 100)
+                    camera.apply(grounitov, 0, 100)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+                moving = True
+            if event.type == pygame.MOUSEMOTION:
+                if moving:
+                    x_new, y_new = event.rel
+                    camera.apply(all_sprites, x_new, y_new)
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 2:
+                moving = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for i in grounitov:
+                        if i.rect.collidepoint(pygame.mouse.get_pos()):
+                            i.chos()
+                    if flag == 0:
+                        for i in grozdaniy:
+                            if i.rect.collidepoint(pygame.mouse.get_pos()):
+                                res = i.spawner(grounitov, res)
+                                print(1)
+                                flag = 1
+                if event.button == 3:
+                    if keys[pygame.K_LALT]:
+                        for i in grores:
+                            print(1)
+                            if i.rect.collidepoint(pygame.mouse.get_pos()):
+                                print(2)
+                                if i.isworkon < 3:
+                                    print(3)
+                                    for k in grounitov:
+                                        print(4)
+                                        if k.rect.collidepoint(pygame.mouse.get_pos()) and k.h == 1:
+                                            print(5)
+                                            k.dob(res)
+                                            i.work()
+                    else:
+                        for i in grounitov:
+                            i.new()
+                            i.rotate(pygame.mouse.get_pos())
+                            i.k = 0
+        grounitov.update(0)
+
+        for tower in tower_group:
+            col_unit = tower.check_collide(grounitov)
+            '''
+            происходит нанесение урона юниту, если он в радиусе атаки башни
+            сделано замеделение нанесения урона, чтобы не было слишком быстро
+            '''
+            if col_unit:
+                if not tower.target or not (col_unit == tower.target or pygame.sprite.collide_circle(tower, tower.target)):
+                    tower.target = col_unit
+                if tower.delay_attack == 300:
+                    tower.delay_attack = 0
+                    print(tower.target.hp)
+                    tower.target.hp -= 15
+                    if tower.target.hp <= 0:
+                        tower.target.kill()
+                        tower.target = None
                 else:
-                    self.x += self.xi
-                if self.yi > 5 and self.need_y != self.y and self.need_y > self.y:
-                    self.y += 1
-                else:
-                    self.y += self.yi
-                if self.xi < 5 and self.need_x != self.x and self.need_x < self.x:
-                    self.x -= 1
-                else:
-                    self.x += self.xi
-                if self.yi < 5 and self.need_y != self.y and self.need_y < self.y:
-                    self.y -= 1
-                else:
-                    self.y += self.yi
-                if ((abs(self.y) - abs(self.need_y) == 1 or abs(self.y) - abs(self.need_y) == -1) and
-                    (abs(self.x) - abs(self.need_x) == 1 or abs(self.x) - abs(self.need_x) == -1)):
-                    self.need_y = self.y
-                    self.need_x = self.x
-                self.rect.y = self.y - 60
-                self.rect.x = self.x - 60
-                pygame.time.wait(speed)
-                self.k += 1
-            else:
-                self.k = 0
-                self.image = self.original_image
-
-    def new(self):
-        self.image = self.original_image
-
-    def chos(self):
-        self.h = (self.h + 1) % 2
-
+                    tower.delay_attack += 1
+        all_sprites.draw(screen)
+        resourse_group.draw(screen)
+        screen.blit(font_golda, (109.5 * 5, 5.7 * 5))
+        screen.blit(font_aluminum, (122.5 * 5, 5.7 * 5))
+        screen.blit(font_titan, (136.7 * 5, 5.7 * 5))
+        grounitov.draw(screen)
+        pygame.display.flip()
+        clock.tick(fps)
+    pygame.quit()

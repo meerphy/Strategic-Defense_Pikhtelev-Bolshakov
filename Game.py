@@ -1,6 +1,6 @@
 import pygame
 from worker import Worker
-from resourse import Resorse
+from table_res import Resorse
 from building import Trone
 pygame.init()
 res = 100

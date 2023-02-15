@@ -1,6 +1,6 @@
 import pygame
 import math
-from main import Uni
+from uni import Uni
 
 
 class Worker(Uni):
