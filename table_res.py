@@ -1,6 +1,7 @@
 import pygame
 from ld_img import load_image
 
+
 class Res(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, image, group):
         super().__init__(group)

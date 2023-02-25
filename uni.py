@@ -3,7 +3,8 @@ import math
 
 
 class Uni(pygame.sprite.Sprite):
-    def __init__(self, x, y, im, spt, spg):
+    def __init__(self, x, y, im, spt, spg, dmg):
+        super().__init__(spt, spg)
         self.x = x
         self.y = y
         self.h = 0
@@ -11,17 +12,15 @@ class Uni(pygame.sprite.Sprite):
         self.v.x = x + 50
         self.na = im
         self.v.y = y + 50
-        pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(im).convert_alpha()
         self.image = pygame.transform.scale(self.image, (150, 150))
         self.rect = self.image.get_rect(center=(self.x + 50, self.y + 50))
         self.original_image = self.image
         self.need_y = self.y
         self.need_x = self.x
-        self.add(spt)
-        self.add(spg)
         self.k = 0
         self.hp = 100
+        self.damage = dmg
 
     def rotate(self, position):
         if self.h == 1:

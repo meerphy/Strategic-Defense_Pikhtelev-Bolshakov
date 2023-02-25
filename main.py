@@ -3,6 +3,8 @@ from worker import Worker
 from table_res import Clres, Res
 from builds import Tile, Tron, Towers
 from menu import start_screen
+from resourse import Resourse
+from universite import Univers
 
 kratnostb = 5
 kolvo_golda = 99
@@ -27,6 +29,11 @@ class Camera:
         for sprite in obj:
             sprite.rect.x += x
             sprite.rect.y += y
+
+
+def improve_unit():
+    for i in grounitov:
+        i.damage += 10
 
 
 if __name__ == '__main__':
@@ -61,11 +68,11 @@ if __name__ == '__main__':
     tower_group = pygame.sprite.Group()
 
     font_res = pygame.font.Font(None, 40)
-    resourse_group = pygame.sprite.Group()
-    res_table = Res(100 * 5, 2 * 5, 'res.png', resourse_group)
-    golda = Clres(102 * 5, 4.7 * 5, 'gold.png', resourse_group)
-    aluminum = Clres(115.5 * 5, 4.5 * 5, 'aluminum.png', resourse_group)
-    titan = Clres(129.5 * 5, 4.5 * 5, 'titan.png', resourse_group)
+    resourse_table_group = pygame.sprite.Group()
+    res_table = Res(100 * 5, 2 * 5, 'res.png', resourse_table_group)
+    golda_table = Clres(102 * 5, 4.7 * 5, 'gold.png', resourse_table_group)
+    aluminum_table = Clres(115.5 * 5, 4.5 * 5, 'aluminum.png', resourse_table_group)
+    titan_table = Clres(129.5 * 5, 4.5 * 5, 'titan.png', resourse_table_group)
     font_golda = font_res.render(str(kolvo_golda), True, (0, 0, 0))
     font_aluminum = font_res.render(str(kolvo_aluminum), True, (0, 0, 0))
     font_titan = font_res.render(str(kolvo_titan), True, (0, 0, 0))
@@ -87,9 +94,17 @@ if __name__ == '__main__':
     towers_right[3] = Towers(330 * kratnostb, 30 * kratnostb, 'левый', tower_group, all_sprites, kratnostb)
 
     grores = pygame.sprite.Group()
-    mu = Worker(200, 150, 'data/samolet.png', grounitov, all_sprites)
-    my = Worker(200, 50, 'data/samolet.png', grounitov, all_sprites)
+    mu = Worker(200, 150, 'data/samolet.png', grounitov, all_sprites, 30)
+    my = Worker(200, 50, 'data/samolet.png', grounitov, all_sprites, 30)
     k = 0
+
+    resourse_group = pygame.sprite.Group()
+    golda = Resourse(100 * kratnostb, 100 * kratnostb, 'gold_shahta.png', resourse_group, all_sprites, kratnostb)
+
+    universite_group = pygame.sprite.Group()
+    universi = Univers(70 * kratnostb, 70 * kratnostb, 'unik.png', resourse_group, all_sprites, kratnostb)
+
+
     camera = Camera()
     moving = False
 
@@ -173,6 +188,7 @@ if __name__ == '__main__':
                 else:
                     tower.delay_attack += 1
         all_sprites.draw(screen)
+        resourse_table_group.draw(screen)
         resourse_group.draw(screen)
         screen.blit(font_golda, (109.5 * 5, 5.7 * 5))
         screen.blit(font_aluminum, (122.5 * 5, 5.7 * 5))
