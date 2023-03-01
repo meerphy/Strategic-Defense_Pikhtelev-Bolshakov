@@ -38,7 +38,7 @@ class Uni(pygame.sprite.Sprite):
     def update(self, speed):
         if self.h == 1:
             koff = self.need_x - self.x
-            if self.need_y != self.y or self.need_x != self.x:
+            if not self.rect.collidepoint(self.need_x, self.need_y):
                 self.v.x = self.need_x - self.x
                 self.v.y = self.need_y - self.y
                 self.xi = int(0.001 * self.v.x * self.k)
@@ -69,6 +69,8 @@ class Uni(pygame.sprite.Sprite):
                 self.k += 1
             else:
                 self.k = 0
+                self.need_y = self.rect.y
+                self.need_x = self.rect.x
                 self.image = self.original_image
 
     def new(self):
