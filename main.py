@@ -42,7 +42,7 @@ if __name__ == '__main__':
     res = 100
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     clock = pygame.time.Clock()
-    size = width, height = 1300, 858
+    size = width, height = 1300, 800
     screen = pygame.display.set_mode(size)
     fps = 240
 
@@ -119,16 +119,24 @@ if __name__ == '__main__':
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     camera.apply(all_sprites, 100, 0)
-                    camera.apply(grounitov, 100, 0)
+                    for i in grounitov:
+                        if i.need_y != i.y or i.need_x != i.x:
+                            i.need_x += 100
                 if event.key == pygame.K_RIGHT:
                     camera.apply(all_sprites, -100, 0)
-                    camera.apply(grounitov, -100, 0)
+                    for i in grounitov:
+                        if i.need_y != i.y or i.need_x != i.x:
+                            i.need_x -= 100
                 if event.key == pygame.K_DOWN:
                     camera.apply(all_sprites, 0, -100)
-                    camera.apply(grounitov, 0, -100)
+                    for i in grounitov:
+                        if i.need_y != i.y or i.need_x != i.x:
+                            i.need_y -= 100
                 if event.key == pygame.K_UP:
                     camera.apply(all_sprites, 0, 100)
-                    camera.apply(grounitov, 0, 100)
+                    for i in grounitov:
+                        if i.need_y != i.y or i.need_x != i.x:
+                            i.need_y += 100
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
                 moving = True
             if event.type == pygame.MOUSEMOTION:
