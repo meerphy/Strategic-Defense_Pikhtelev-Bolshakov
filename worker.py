@@ -1,11 +1,11 @@
 import pygame
 import math
-from uni import Uni
+from main import Uni
 
 
 class Worker(Uni):
-    def __init__(self, x, y, im, spt, spg, dmg):
-        Uni.__init__(self, x, y, im, spt, spg, dmg)
+    def __init__(self, x, y, im, spt):
+        Uni.__init__(self, x, y, im, spt)
 
     def startwork(self):
         print("работа началась")
